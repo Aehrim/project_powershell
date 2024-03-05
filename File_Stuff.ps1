@@ -3,6 +3,8 @@
 # So We create an Archival Function that Iterates Through the Whole Drive (System Data Excluded We dont Want to Accidentally Wipe the System do we now?:D) and Compares The Age of the Data to the Age i Set here
 # If the Age is Older than i set here the Archival Function is Triggered which then Archives the Old Files und Moves Them to a Archival Folder  
 # In Case the Age equals The Same Day or Just a Bit Older e.g 1 Day ago we Want to create A Host Message that says All Good Sir or some Shit like That
+# Archival seems Finished now What exactly should this do?
+# It may Seem that i have a Plan Here but i really dont i just did the First Thing that came to mind 
 
 # Set Policy to Run The Script without Signing
 Set-Executionpolicy Unrestricted -Force
