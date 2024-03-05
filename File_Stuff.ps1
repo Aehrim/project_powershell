@@ -22,7 +22,7 @@ if (-not (Test-Path -Path $archivedir)) {
 function Archival {
     # When a File or Directory is Found in Best Case More than one Pack them in an Archive and move them to $archivedir 
     # if its Only One or 2 Just Copy them and delete the Original if possible
-    $filesToArchive = Get-ChildItem -Path $drive.FullName -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-2) }
+    $filesToArchive = Get-ChildItem -Path $drive.FullName -Exclude "$rootDirectory\Windows\*" -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-2) }
 
     if ($filesToArchive.Count -gt 2) {
         # Pack the files into an archive and move them to $archivedir
@@ -56,7 +56,7 @@ function CheckAge {
         }
     }
 
-    if $drives == $compareDate {
+    if $rootDirectory == CheckAge {
         Write-Host "All Good Files are UptoDate and dont need Archiving"
     }
 
