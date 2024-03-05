@@ -25,7 +25,7 @@ function Create-Archive {
 
 function Test_Age {
     # Check if File is Older Than Deletion Date
-    if $tarfile >= $deletionDate {
+    if $tarfile < $deletionDate {
         Remove-Item $tarfile
     }
     else {
