@@ -22,7 +22,22 @@ if (-not (Test-Path -Path $archivedir)) {
 function Archival {
     # When a File or Directory is Found in Best Case More than one Pack them in an Archive and move them to $archivedir 
     # if its Only One or 2 Just Copy them and delete the Original if possible
-    
+    $filesToArchive = Get-ChildItem -Path $drive.FullName -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-2) }
+
+    if ($filesToArchive.Count -gt 2) {
+        # Pack the files into an archive and move them to $archivedir
+        $archiveName = Join-Path -Path $archivedir -ChildPath ("Archive_" + $drive.Name + "_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".zip")
+        Compress-Archive -Path $filesToArchive.FullName -DestinationPath $archiveName
+        Remove-Item -Path $filesToArchive.FullName -Force
+    }
+    elseif ($filesToArchive.Count -gt 0) {
+        # Copy the files to $archivedir and delete the original files
+        foreach ($file in $filesToArchive) {
+            $destinationPath = Join-Path -Path $archivedir -ChildPath $file.Name
+            Copy-Item -Path $file.FullName -Destination $destinationPath
+            Remove-Item -Path $file.FullName -Force
+        }
+    }
 }
 
 # Archive Data Thats Older than x Days
@@ -31,7 +46,14 @@ function CheckAge {
     $drives = Get-ChildItem -Path $rootDirectory -Recurse -File -Exclude "$rootDirectory\Windows\*"
 
     foreach ($drive in $drives) {
-
+        # Compare the age of each file in the drive to the set age
+        foreach ($file in $drive) {
+            if ($file.LastWriteTime -lt (Get-Date).AddDays(-2)) {
+                # Call the Archival function to archive the old files
+                Archival
+                break
+            }
+        }
     }
 
     if $drives == $compareDate {
