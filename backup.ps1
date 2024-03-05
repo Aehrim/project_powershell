@@ -13,7 +13,7 @@ if (-not (Test-Path -Path $destinationDirectory)) {
 # Tar the folder Together or Using the 7Zip4Powershell Module dont know yet wait for VM Install
 function Create-Archive {
     # Get current date to create a timestamp for the backup folder
-    $dateStamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $dateStamp = Get-Date -Format "MM/dd/yyyy"
     $tarfile = "$dateStamp_Backup.tar.gz"
 
     #In Theory with Tar
@@ -27,7 +27,7 @@ function Test_Age {
         Remove-Item $tarfile
     }
     else {
-        Write-Host "TarFile Up to Date no Deletion Required"
+        Write-Host "Tarfile Up to Date no Deletion Required"
     }
 }
 
