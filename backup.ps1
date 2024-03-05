@@ -1,3 +1,5 @@
+# Set Policy to Run The Script without Signing
+Set-Executionpolicy Unrestricted -Force
 # Define source and destination directories
 $sourceDirectory = "Hier Pfad zum Backup angeben"
 $destinationDirectory = "HIER Destination Pfad am besten Externe Festplatte benutzen"

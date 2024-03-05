@@ -1,5 +1,8 @@
+# Set Policy to Run The Script without Signing
+Set-Executionpolicy Unrestricted -Force
 # Define the interval for monitoring in seconds
-$monitoringInterval = 5
+$monitoringInterval = 3
+$allocatedDisk = "25"
 
 # Function to retrieve CPU and memory usage
 function Get-SystemUsage {
@@ -11,6 +14,18 @@ function Get-SystemUsage {
     }
 }
 
+function GetDiskSpace {
+    $diskspace = Get-PSDrive + C:
+    $OverGB = $diskspace * ($allocatedDisk/100)
+    #When Disk Space becomes to full
+    if $diskspace -lt $OverGB {
+        Write-Error "Error: Disk is Nearly Full Please make Some Space on the Disk"
+    }
+    else {
+        Write-Host "Disk Space is Sufficient"
+    }
+}
+
 # Main monitoring loop
 while ($true) {
     $systemUsage = Get-SystemUsage
@@ -18,6 +33,7 @@ while ($true) {
     # Output current system usage
     Write-Host "CPU Usage: $($systemUsage.CPUUsage)%"
     Write-Host "Memory Usage: $($systemUsage.MemoryUsage)%"
+    Write-Host GetDiskSpace
 
     # Wait for the monitoring interval
     Start-Sleep -Seconds $monitoringInterval
