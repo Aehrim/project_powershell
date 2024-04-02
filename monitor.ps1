@@ -18,7 +18,7 @@ function GetDiskSpace {
     $diskspace = Get-PSDrive + C:
     $OverGB = $diskspace * ($allocatedDisk/100)
     #When Disk Space becomes to full
-    if $diskspace -lt $OverGB {
+    if ($diskspace -lt $OverGB) {
         Write-Error "Error: Disk is Nearly Full Please make Some Space on the Disk"
     }
     else {

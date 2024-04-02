@@ -1,6 +1,6 @@
 # First of All Powershell is a Pain in The ass Why cant i just use your Typical System Commands instead of these Fancy CMDLETS I would need maybe Half the Code in Linux but thats just me Ranting
 # So Whats the Plan Here? We want Optimization for File Management and Stuff for the New Server
-# So We create an Archival Function that Iterates Through the Whole Drive (System Data Excluded We dont Want to Accidentally Wipe the System do we now?:D) and Compares The Age of the Data to the Age i Set here
+# So We create an Archival Function that Iterates Through the Whole Drive (System Data Excluded We dont Want to Accidentally Wipe the System do we now?:D) Comparing The Age of the Data to the Age i Set here
 # If the Age is Older than i set here the Archival Function is Triggered which then Archives the Old Files und Moves Them to a Archival Folder  
 # In Case the Age equals The Same Day or Just a Bit Older e.g 1 Day ago we Want to create A Host Message that says All Good Sir or some Shit like That
 # Archival seems Finished now What exactly should this do?
@@ -14,7 +14,7 @@ $rootDirectory = "C:\"
 $archivedir = "HERE would be the Path to the Archive Dir"
 
 # Get Current Date for Compare Purposes
-$compareDate = Get-Date
+# $compareDate = Get-Date
 
 # Create Archivedir if it doesnt exist
 if (-not (Test-Path -Path $archivedir)) {
@@ -58,7 +58,7 @@ function CheckAge {
         }
     }
 
-    if $rootDirectory == CheckAge {
+    if ($rootDirectory -eq "CheckAge") {
         Write-Host "All Good Files are UptoDate and dont need Archiving"
     }
 

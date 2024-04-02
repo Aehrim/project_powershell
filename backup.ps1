@@ -12,10 +12,10 @@ if (-not (Test-Path -Path $destinationDirectory)) {
     New-Item -Path $destinationDirectory -ItemType Directory
 }
 
-# Tar the folder Together or Using the 7Zip4Powershell Module dont know yet wait for VM Install
-function Create-Archive {
+# Tar the folder Together or Using the 7Zip4Powershell Module 
+function New-Archive {
     # Get current date to create a timestamp for the backup folder
-    $dateStamp = Get-Date -Format "MM/dd/yyyy"
+   # $dateStamp = Get-Date -Format "MM/dd/yyyy"
     $tarfile = "$dateStamp_Backup.tar.gz"
 
     #In Theory with Tar
@@ -25,7 +25,7 @@ function Create-Archive {
 
 function Test_Age {
     # Check if File is Older Than Deletion Date
-    if $tarfile < $deletionDate {
+    if ($tarfile -lt $deletionDate) {
         Remove-Item $tarfile
     }
     else {
@@ -33,11 +33,5 @@ function Test_Age {
     }
 }
 
-# Create a folder with current date stamp under the destination directory
-# $backupFolder = Join-Path -Path $destinationDirectory -ChildPath "Backup_$dateStamp"
-# New-Item -Path $backupFolder -ItemType Directory
-
-# Copy files from source directory to the backup folder
-# Copy-Item -Path $sourceDirectory\* -Destination $backupFolder -Recurse -Force
 
 Write-Host "Backup completed successfully."
