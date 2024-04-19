@@ -5,4 +5,3 @@
 ## ToDo
 - Create a Gui For The Scripts so the Future Admins dont need to See my Shit Code
 - Function testing
-- Cut out my Ramblings :D

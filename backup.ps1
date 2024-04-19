@@ -1,11 +1,7 @@
-# Set Policy to Run The Script without Signing
-Set-Executionpolicy Unrestricted -Force
 # Define source and destination directories
-$sourceDirectory = "Hier Pfad zum Backup angeben"
-$destinationDirectory = "HIER Destination Pfad am besten Externe Festplatte benutzen"
-# If i Decide to use Zip for Powershell Commented for now
-# $pathtomodule= ".\7Zip4Powershell"
-$deletionDate = Get-Date.AddDays(+2)
+$sourceDirectory = "C:\Path\To\Backup" # Replace with your actual path
+$destinationDirectory = "C:\Path\To\Destination" # Replace with your actual path
+$deletionDate = (Get-Date).AddDays(2)
 
 # Create destination directory if it does not exist
 if (-not (Test-Path -Path $destinationDirectory)) {
@@ -15,23 +11,27 @@ if (-not (Test-Path -Path $destinationDirectory)) {
 # Tar the folder Together or Using the 7Zip4Powershell Module 
 function New-Archive {
     # Get current date to create a timestamp for the backup folder
-   # $dateStamp = Get-Date -Format "MM/dd/yyyy"
+    $dateStamp = Get-Date -Format "yyyyMMdd"
     $tarfile = "$dateStamp_Backup.tar.gz"
 
     #In Theory with Tar
-   cmd.exe /c "tar -cvzf $sourceDirectory"
-   Move-Item -Path $sourceDirectory\$tarfile -Destination $destinationDirectory 
+    cmd.exe /c "tar -cvzf $tarfile $sourceDirectory"
+    Move-Item -Path $tarfile -Destination $destinationDirectory 
 }
 
 function Test_Age {
+    $tarfile = Get-ChildItem -Path $destinationDirectory -Filter "*.tar.gz" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+
     # Check if File is Older Than Deletion Date
-    if ($tarfile -lt $deletionDate) {
-        Remove-Item $tarfile
+    if ($tarfile.LastWriteTime -lt $deletionDate) {
+        Remove-Item $tarfile.FullName
     }
     else {
         Write-Host "Tarfile Up to Date no Deletion Required"
     }
 }
 
+New-Archive
+Test_Age
 
 Write-Host "Backup completed successfully."

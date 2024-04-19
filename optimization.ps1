@@ -1,35 +1,35 @@
-# Pfad zum zu überprüfenden Ordner
-$Quellpfad = "C:\Pfad\Zum\Zu\Überprüfenden\Ordner"
+# Path to the directory to be checked
+$Quellpfad = "C:\Path\To\Directory\To\Be\Checked" # Replace with your actual path
 
-# Pfad zum Archivverzeichnis
-$Archivpfad = "C:\Pfad\Zum\Archivverzeichnis"
+# Path to the archive directory
+$Archivpfad = "C:\Path\To\Archive\Directory" # Replace with your actual path
 
-# Alter der Dateien, die verschoben werden sollen (in Tagen)
+# Age of the files to be moved (in days)
 $Alter = 30
 
-# Überprüfen, ob der Quellpfad existiert
+# Check if the source path exists
 if (!(Test-Path -Path $Quellpfad)) {
-    Write-Host "Der Quellpfad existiert nicht."
+    Write-Host "The source path does not exist."
     exit
 }
 
-# Überprüfen, ob das Archivverzeichnis existiert, falls nicht, erstellen
+# Check if the archive directory exists, if not, create it
 if (!(Test-Path -Path $Archivpfad)) {
     New-Item -Path $Archivpfad -ItemType Directory | Out-Null
-    Write-Host "Das Archivverzeichnis wurde erstellt."
+    Write-Host "The archive directory has been created."
 }
 
-# Alle Dateien im Quellpfad überprüfen
-$Dateien = Get-ChildItem -Path $Quellpfad
+# Check all files in the source path
+$Dateien = Get-ChildItem -Path $Quellpfad -File
 
-# Durch jede Datei iterieren
+# Iterate through each file
 foreach ($Datei in $Dateien) {
-    # Überprüfen, ob die Datei älter als das angegebene Alter ist
+    # Check if the file is older than the specified age
     if ($Datei.LastWriteTime -lt (Get-Date).AddDays(-$Alter)) {
-        # Datei in das Archivverzeichnis verschieben
-        Move-Item -Path $Datei.FullName -Destination $Archivpfad -Force
-        Write-Host "Die Datei $($Datei.Name) wurde in das Archivverzeichnis verschoben."
+        # Move the file to the archive directory
+        Move-Item -Path $Datei.FullName -Destination $Archivpfad
+        Write-Host "The file $($Datei.Name) has been moved to the archive directory."
     }
 }
 
-Write-Host "Datenoptimierung abgeschlossen."
+Write-Host "Data optimization completed."
